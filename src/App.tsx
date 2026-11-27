@@ -71,14 +71,6 @@ export default function App() {
     return () => controller.abort();
   }, [token, user, query, filter, sortBy, page, revision]);
 
-  function resetSession() {
-    sessionStorage.removeItem(TOKEN_KEY);
-    setToken(null);
-    setUser(null);
-    setTasks([]);
-    setMeta(null);
-    setError('');
-  }
   function clearCriteria() {
     setQuery('');
     setFilter('all');

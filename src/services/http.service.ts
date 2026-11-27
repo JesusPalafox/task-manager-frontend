@@ -1,14 +1,16 @@
 import { API_URL } from '../config/env';
 import type { ApiErrorBody } from '../models/api.types';
 export class HttpError extends Error {
-  constructor(
-    public readonly status: number,
-    public readonly code: string,
-    message: string,
-    public readonly requestId?: string,
-  ) {
+  readonly status: number;
+  readonly code: string;
+  readonly requestId?: string;
+
+  constructor(status: number, code: string, message: string, requestId?: string) {
     super(message);
     this.name = 'HttpError';
+    this.status = status;
+    this.code = code;
+    this.requestId = requestId;
   }
 }
 interface RequestOptions extends Omit<RequestInit, 'body'> {
