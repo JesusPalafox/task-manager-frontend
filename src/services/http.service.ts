@@ -1,0 +1,48 @@
+import { API_URL } from '../config/env';
+import type { ApiErrorBody } from '../models/api.types';
+export class HttpError extends Error {
+  constructor(
+    public readonly status: number,
+    public readonly code: string,
+    message: string,
+    public readonly requestId?: string,
+  ) {
+    super(message);
+    this.name = 'HttpError';
+  }
+}
+interface RequestOptions extends Omit<RequestInit, 'body'> {
+  body?: unknown;
+}
+export async function http<T>(
+  path: string, token: string, options: RequestOptions = {},
+): Promise<T> {
+  let response: Response;
+  try {
+    response = await fetch(API_URL + path, {
+      ...options,
+      body: options.body === undefined ? undefined : JSON.stringify(options.body),
+      headers: {
+        Accept: 'application/json',
+        ...(options.body === undefined ? {} : { 'Content-Type': 'application/json' }),
+        ...(token ? { Authorization: 'Bearer ' + token } : {}),
+        ...options.headers,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') throw error;
+    throw new HttpError(0, 'NETWORK_ERROR', 'No fue posible conectar con la API.');
+  }
+  if (response.status === 204) return undefined as T;
+  const payload: unknown = await response.json().catch(() => null);
+  if (!response.ok) {
+    const body = payload as Partial<ApiErrorBody> | null;
+    throw new HttpError(
+      response.status, body?.error?.code || 'HTTP_ERROR',
+      body?.error?.message || 'La solicitud falló con HTTP ' + response.status,
+      body?.error?.requestId,
+    );
+  }
+  if (payload === null) throw new HttpError(response.status, 'INVALID_JSON', 'Respuesta JSON inválida.');
+  return payload as T;
+}

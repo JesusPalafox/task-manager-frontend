@@ -6,7 +6,7 @@ import {
 } from '../utils/task-validation';
 
 interface TaskFormProps {
-  onAddTask: (title: string) => void;
+  onAddTask: (title: string) => Promise<boolean>;
 }
 
 export function TaskForm({ onAddTask }: TaskFormProps) {
@@ -18,16 +18,18 @@ export function TaskForm({ onAddTask }: TaskFormProps) {
     if (error) setError(validateTaskTitle(value) ?? '');
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     const validationMessage = validateTaskTitle(title);
     if (validationMessage) {
       setError(validationMessage);
       return;
     }
-    onAddTask(title.trim());
-    setTitle('');
-    setError('');
+    const created = await onAddTask(title.trim());
+    if (created) {
+      setTitle('');
+      setError('');
+    }
   }
 
   return (
@@ -38,7 +40,7 @@ export function TaskForm({ onAddTask }: TaskFormProps) {
           <h2 id="task-form-title">Nueva tarea</h2>
         </div>
       </div>
-      <form className="task-form" onSubmit={handleSubmit} noValidate>
+      <form className="task-form" onSubmit={(event) => { void handleSubmit(event); }} noValidate>
         <label htmlFor="task-title">Título de la tarea</label>
         <div className="task-form__row">
           <input

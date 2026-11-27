@@ -11,11 +11,12 @@ import {
 interface TaskItemProps {
   task: Task;
   onToggleStatus: (id: string) => void;
-  onEditTask: (id: string, title: string) => void;
-  onDeleteTask: (id: string) => void;
+  onEditTask: (id: string, title: string) => Promise<boolean>;
+  onDeleteTask: (id: string) => Promise<boolean>;
+  canDelete: boolean;
 }
 
-export function TaskItem({ task, onToggleStatus, onEditTask, onDeleteTask }: TaskItemProps) {
+export function TaskItem({ task, onToggleStatus, onEditTask, onDeleteTask, canDelete }: TaskItemProps) {
   const { id, title, status, updatedAt } = task;
   const [isEditing, setIsEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState(title);
@@ -39,23 +40,25 @@ export function TaskItem({ task, onToggleStatus, onEditTask, onDeleteTask }: Tas
     if (error) setError(validateTaskTitle(value) ?? '');
   }
 
-  function handleEditSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function handleEditSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     const validationMessage = validateTaskTitle(draftTitle);
     if (validationMessage) {
       setError(validationMessage);
       return;
     }
-    onEditTask(id, draftTitle.trim());
-    setError('');
-    setIsEditing(false);
+    const saved = await onEditTask(id, draftTitle.trim());
+    if (saved) {
+      setError('');
+      setIsEditing(false);
+    }
   }
 
   return (
     <article className={`task-item task-item--${status}`} role="listitem">
       <div className="task-item__content">
         {isEditing ? (
-          <form className="task-item__edit-form" onSubmit={handleEditSubmit} noValidate>
+          <form className="task-item__edit-form" onSubmit={(event) => { void handleEditSubmit(event); }} noValidate>
             <label className="sr-only" htmlFor={`edit-task-${id}`}>
               Editar título de la tarea
             </label>
@@ -99,14 +102,14 @@ export function TaskItem({ task, onToggleStatus, onEditTask, onDeleteTask }: Tas
         <button type="button" onClick={handleStartEdit} disabled={isEditing}>
           Editar
         </button>
-        <button
+        {canDelete && <button
           type="button"
           className="button-danger"
-          onClick={() => onDeleteTask(id)}
+          onClick={() => { void onDeleteTask(id); }}
           disabled={isEditing}
         >
           Eliminar
-        </button>
+        </button>}
       </div>
     </article>
   );
