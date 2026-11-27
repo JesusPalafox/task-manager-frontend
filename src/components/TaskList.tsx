@@ -5,12 +5,13 @@ interface TaskListProps {
   tasks: Task[];
   emptyMessage: string;
   onToggleStatus: (id: string) => void;
-  onEditTask: (id: string, title: string) => void;
-  onDeleteTask: (id: string) => void;
+  onEditTask: (id: string, title: string) => Promise<boolean>;
+  onDeleteTask: (id: string) => Promise<boolean>;
+  canDelete: boolean;
 }
 
 export function TaskList({
-  tasks, emptyMessage, onToggleStatus, onEditTask, onDeleteTask,
+  tasks, emptyMessage, onToggleStatus, onEditTask, onDeleteTask, canDelete,
 }: TaskListProps) {
   const resultLabel = tasks.length === 1 ? '1 tarea' : `${tasks.length} tareas`;
   return (
@@ -36,6 +37,7 @@ export function TaskList({
               onToggleStatus={onToggleStatus}
               onEditTask={onEditTask}
               onDeleteTask={onDeleteTask}
+              canDelete={canDelete}
             />
           ))}
         </div>

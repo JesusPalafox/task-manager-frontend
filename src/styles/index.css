@@ -404,3 +404,11 @@ input[aria-invalid='true'] {
 .task-detail dt{font-weight:700}.task-detail dd{margin:0}
 .detail-actions{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-top:1.5rem}
 .task-item__title a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+/* A10 — estado remoto y acceso a la API */
+.auth-panel{max-width:600px;margin:1rem auto;padding:2rem}
+.auth-panel form{display:grid;gap:.75rem;margin-top:1rem}
+.auth-panel input{padding:.8rem;border:1px solid #94a3b8;border-radius:.5rem}
+.remote-message{margin:1rem 0;padding:1rem;border-radius:.6rem;background:#fff5da;color:#78350f}
+.remote-controls{display:flex;gap:.8rem;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.remote-controls button{padding:.6rem 1rem}
