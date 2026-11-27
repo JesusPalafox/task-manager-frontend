@@ -1,34 +1,11 @@
-# Administrador de tareas - Frontend
-
-Aplicación desarrollada con React, TypeScript y PNPM.
-
-## Alcance actual
-
-La aplicación administra una colección local de tareas mediante
-estado de React. Actualmente permite:
-
-- Registrar tareas.
-- Consultar la colección.
-- Completar y reabrir tareas.
-- Editar títulos.
-- Cancelar una edición.
-- Eliminar con confirmación.
-- Eliminar todas las tareas completadas.
-- Calcular el resumen automáticamente.
-- Mostrar una colección vacía.
-
-Los cambios permanecen en memoria y se reinician al recargar.
-
-## Operaciones CRUD
-
-- Create: registro mediante el formulario.
-- Read: renderizado de la colección.
-- Update: cambio de estado y edición.
-- Delete: eliminación confirmada.
-
-## Validación
-
-```bash
-pnpm lint
-pnpm build
-```
+# Administrador de tareas — Frontend
+React, TypeScript, Vite y React Router. Consume API Express protegida por JWT.
+## Local
+`pnpm install`; crea `.env.local` con `VITE_API_URL=/api`; inicia Backend en localhost:3000 y `pnpm dev`.
+## Verificar
+`pnpm verify` ejecuta oxlint, nueve pruebas Vitest y build.
+`pnpm preview` muestra dist. `pnpm smoke:production` comprueba el despliegue.
+## Render
+Blueprint `render.yaml` publica dist y solicita `VITE_API_URL`, que debe ser https://task-api-express-jpala.onrender.com/api .
+Configurar Backend CORS_ORIGIN según la URL real del sitio.
+No subir tokens, JWT_SECRET, contraseñas ni MONGODB_URI.
