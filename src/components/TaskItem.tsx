@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import { Link } from 'react-router';
+import { formatTaskDate } from '../utils/date';
 import type { Task } from '../models/task.interface';
 import {
   TASK_TITLE_MAX_LENGTH,
@@ -11,10 +13,6 @@ interface TaskItemProps {
   onToggleStatus: (id: string) => void;
   onEditTask: (id: string, title: string) => void;
   onDeleteTask: (id: string) => void;
-}
-
-function formatTaskDate(value: string): string {
-  return new Intl.DateTimeFormat('es-MX', { dateStyle: 'medium' }).format(new Date(value));
 }
 
 export function TaskItem({ task, onToggleStatus, onEditTask, onDeleteTask }: TaskItemProps) {
@@ -83,7 +81,7 @@ export function TaskItem({ task, onToggleStatus, onEditTask, onDeleteTask }: Tas
           </form>
         ) : (
           <>
-            <h3 className="task-item__title">{title}</h3>
+            <h3 className="task-item__title"><Link to={`/tasks/${id}`}>{title}</Link></h3>
             <span className={`status-badge status-badge--${status}`}>
               {statusLabel}
             </span>

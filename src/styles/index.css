@@ -392,3 +392,15 @@ input[aria-invalid='true'] {
 @media (max-width: 760px) {
   .filters-grid { grid-template-columns: 1fr; }
 }
+
+/* Navegación y páginas — EC3 F1 A9 */
+.app-navigation{display:flex;gap:.8rem;padding:1rem max(1.5rem,calc((100% - 1100px)/2));background:#e7edff;border-bottom:1px solid #cbd5e1}
+.app-navigation a{padding:.7rem 1rem;border-radius:.6rem;color:#1e3a8a;font-weight:700;text-decoration:none}
+.app-navigation a.active{background:#1d4ed8;color:white}
+.page-stack{display:grid;gap:1.25rem}.page-title{margin:0}
+.welcome-panel,.not-found,.task-detail{padding:2rem}
+.button-link{display:inline-block;background:#1d4ed8;color:white;padding:.75rem 1rem;border-radius:.55rem;text-decoration:none;margin-top:1rem}
+.task-detail dl{display:grid;grid-template-columns:130px minmax(0,1fr);gap:.7rem;overflow-wrap:anywhere}
+.task-detail dt{font-weight:700}.task-detail dd{margin:0}
+.detail-actions{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-top:1.5rem}
+.task-item__title a{color:inherit;text-decoration:underline;text-underline-offset:3px}
