@@ -1,0 +1,11 @@
+# Lista de liberación Frontend A12
+- [ ] Dependencias y pnpm-lock.yaml sincronizados.
+- [ ] `pnpm install --frozen-lockfile` aprobado.
+- [ ] `pnpm verify` pasa lint, 9 pruebas y build.
+- [ ] CRUD de A10 y rutas de A11 comprobadas manualmente.
+- [ ] `pnpm preview` sirve dist correctamente.
+- [ ] VITE_API_URL de Render apunta a API HTTPS terminada en /api.
+- [ ] CORS_ORIGIN del Backend coincide con origen del Frontend.
+- [ ] Render sirve rutas SPA y la prueba de humo aprueba.
+- [ ] Pruebas reales user y admin aprobadas.
+- [ ] Commit desplegado coincide con etiqueta v1.0.0.
