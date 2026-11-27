@@ -11,7 +11,7 @@ export function LoginPanel({ onLogin }: Props) {
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setError(''); setBusy(true);
     try {
-      const result = await login(email, password);
+      const result = await login({ email, password });
       onLogin(result.token, result.user);
       setPassword('');
     } catch (reason) {
