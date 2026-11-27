@@ -1,13 +1,13 @@
+import type { AuthUser, LoginCredentials, LoginResponse, RegisterInput, RegisterResponse, MeResponse } from '../models/auth.types';
 import { http } from './http.service';
-interface User { id: string; name: string; email: string; role: 'user' | 'admin' }
-export type AuthUser = User;
-export async function login(email: string, password: string): Promise<{ token: string; user: User }> {
-  const body = await http<{ data: { accessToken: string; user: User } }>(
-    '/auth/login', '', { method: 'POST', body: { email, password } },
-  );
-  return { token: body.data.accessToken, user: body.data.user };
+export type { AuthUser } from '../models/auth.types';
+export async function register(input: RegisterInput): Promise<AuthUser> {
+ return (await http<RegisterResponse>('/auth/register', '', { method: 'POST', body: input })).data.user;
 }
-export async function getMe(token: string): Promise<User> {
-  const body = await http<{ data: { user: User } }>('/auth/me', token);
-  return body.data.user;
+export async function login(input: LoginCredentials): Promise<{ token: string; user: AuthUser }> {
+ const result = await http<LoginResponse>('/auth/login', '', { method: 'POST', body: input });
+ return { token: result.data.accessToken, user: result.data.user };
+}
+export async function getMe(token: string): Promise<AuthUser> {
+ return (await http<MeResponse>('/auth/me', token)).data.user;
 }
