@@ -1,5 +1,6 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { http } from '../services/http.service';
+import { API_URL } from '../config/env';
 import { getSessionToken, saveSessionToken } from '../services/session.service';
 const fetchMock=vi.fn();
 beforeEach(() => { fetchMock.mockReset(); vi.stubGlobal('fetch', fetchMock); });
@@ -10,7 +11,8 @@ describe('HTTP', () => {
    const result=await http<{data:{title:string}}>('/tasks','token-falso');
    expect(result.data.title).toBe('OK');
    const [url,options]=fetchMock.mock.calls[0] as [string, RequestInit];
-   expect(url).toBe('/api/tasks');
+   expect(url).toBe(API_URL + '/tasks');
+   expect(url).toMatch(/\/api\/tasks$/);
    expect(new Headers(options.headers).get('Authorization')).toBe('Bearer token-falso');
  });
  it('admite 204 sin parsear JSON', async () => {
